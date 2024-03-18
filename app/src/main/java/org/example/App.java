@@ -3,6 +3,12 @@
  */
 package org.example;
 
+import java.io.FileOutputStream;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
@@ -10,5 +16,17 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+
+         try (XWPFDocument doc = new XWPFDocument()) {
+            XWPFParagraph p = doc.createParagraph();
+            XWPFRun r = p.createRun();
+            r.setText("Hello, World! Es hat funktioniert!");
+            
+            try (FileOutputStream out = new FileOutputStream("generiertesDoc.docx")) {
+                doc.write(out);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
